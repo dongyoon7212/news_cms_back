@@ -1,17 +1,21 @@
 package com.newscms.news_cms_back.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@RestController
 public class NaverApiBatchController {
 
     @Value("${naver.api.client-id}")
@@ -30,10 +34,14 @@ public class NaverApiBatchController {
             String url = buildUrl(category);
             String result = getNewsFromApi(url);
 
+            JsonParser parser = new JsonParser();
+            JsonObject obj = (JsonObject)parser.parse(result.toString());
+            System.out.println(obj.get("items"));
+
             // 카테고리별 뉴스 결과 출력
-            System.out.println("=== [" + category + " 뉴스] ===");
-            System.out.println(result);
-            System.out.println("=============================");
+//            System.out.println("=== [" + category + " 뉴스] ===");
+//            System.out.println(result);
+//            System.out.println("=============================");
         }
     }
 
