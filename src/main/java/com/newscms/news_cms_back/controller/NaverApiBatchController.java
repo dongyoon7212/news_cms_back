@@ -1,8 +1,13 @@
 package com.newscms.news_cms_back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.newscms.news_cms_back.dto.NewsDTO;
+import com.newscms.news_cms_back.entity.News;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,8 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class NaverApiBatchController {
@@ -36,7 +40,12 @@ public class NaverApiBatchController {
 
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject)parser.parse(result.toString());
-            System.out.println(obj.get("items"));
+//            System.out.println(obj.get("items"));
+            Gson gson = new Gson();
+            List<NewsDTO> newsDTOList = gson.fromJson(obj.get("items"), new TypeToken<List<NewsDTO>>(){}.getType());
+            System.out.println(newsDTOList);
+
+
 
             // 카테고리별 뉴스 결과 출력
 //            System.out.println("=== [" + category + " 뉴스] ===");

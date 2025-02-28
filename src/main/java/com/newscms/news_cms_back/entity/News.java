@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class News {
-    private int id;                     //뉴스 고유번호
-    private String ctgry;               //뉴스 카테고리
-    private String title;               //뉴스 제목
-    private String orgnlnk;             //뉴스 원문 링크
-    private String lnk;                 //뉴스 네이버 링크
-    private String descpt;              //뉴스 간략 내용
-    private String pubDt;               //뉴스 네이버 등록일시
-    private LocalDateTime regDt;        //등록일시
-    private LocalDateTime updDt;        //수정일시
-    private String sttsCd;              //상태코드
+    private Long id;  // Primary Key (AUTO_INCREMENT)
+    private String title;
+    private String orgLnk;
+    private String link;
+    private String dscptn;
+    private String pubDt;
+    private String ctgry;  // "속보"로 저장
+    private LocalDateTime regDt;  // 현재 시간
+    private LocalDateTime updDt;  // 현재 시간
+    private String sttsCd;  // "1"로 저장
 }
