@@ -8,7 +8,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.newscms.news_cms_back.dto.NewsDTO;
 import com.newscms.news_cms_back.entity.News;
+import com.newscms.news_cms_back.service.NewsService;
 import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +30,9 @@ public class NaverApiBatchController {
     @Value("${naver.api.client-secret}")
     private String clientSecret;
 
+    @Autowired
+    private NewsService newsService;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final List<String> categories = Arrays.asList("속보", "정치", "경제", "IT", "스포츠", "연예");
 
@@ -43,7 +48,10 @@ public class NaverApiBatchController {
 //            System.out.println(obj.get("items"));
             Gson gson = new Gson();
             List<NewsDTO> newsDTOList = gson.fromJson(obj.get("items"), new TypeToken<List<NewsDTO>>(){}.getType());
-            System.out.println(newsDTOList);
+            for (int i = 0; i < newsDTOList.size(); i++) {
+                System.out.println(newsDTOList.get(i).toEntity());
+            }
+            //newsService.addNews(newsDTOList);
 
 
 
