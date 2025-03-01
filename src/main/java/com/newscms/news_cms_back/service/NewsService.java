@@ -13,8 +13,9 @@ public class NewsService {
     @Autowired
     private NewsMapper newsMapper;
 
-    public void addNews(List<NewsDTO> newsDTOList) {
-
-        //return  newsMapper.addNews();
+    public void addNews(List<NewsDTO> newsDTOList, String category) {
+        for (int i = 0; i < newsDTOList.size(); i++) {
+            newsMapper.addNews(newsDTOList.get(i).toEntity(category));
+        }
     }
 }

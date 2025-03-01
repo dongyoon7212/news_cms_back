@@ -15,16 +15,16 @@ public class NewsDTO {
     private String originallink;
     private String link;
     private String description;
-    private String pubdate;
+    private String pubDate;
 
-    public News toEntity() {
+    public News toEntity(String category) {
         return News.builder()
-                .ctgry("속보")
+                .ctgry(category)
                 .title(this.title)
-                .orgLnk(this.originallink)
-                .link(this.link)
+                .orgnLnk(this.originallink)
+                .lnk(this.link)
                 .dscptn(this.description)
-                .pubDt(this.pubdate)
+                .pubDt(this.pubDate)
                 .regDt(LocalDateTime.now())
                 .updDt(LocalDateTime.now())
                 .sttsCd("1")

@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class News {
-    private Long id;  // Primary Key (AUTO_INCREMENT)
+    private Long newsId;  // Primary Key (AUTO_INCREMENT)
     private String title;
-    private String orgLnk;
-    private String link;
+    private String orgnLnk;
+    private String lnk;
     private String dscptn;
     private String pubDt;
     private String ctgry;  // "속보"로 저장

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.newscms.news_cms_back.repository.NewsMapper">
     <resultMap id="News" type="com.newscms.news_cms_back.entity.News">
-        <id property="id" column="id"/>
+        <id property="newsId" column="news_id"/>
         <result property="ctgry" column="ctgry"/>
         <result property="title" column="title"/>
         <result property="orgnLnk" column="orgn_lnk" />
@@ -16,6 +16,20 @@
         <result property="updDt" column="upd_dt" />
         <result property="sttsCd" column="stts_cd" />
     </resultMap>
-
+    <insert id="addNews" parameterType="com.newscms.news_cms_back.entity.News" useGeneratedKeys="true" keyProperty="newsId">
+        INSERT INTO NEWS_TB
+        VALUES(
+            0,
+            #{ctgry},
+            #{title},
+            #{orgnLnk},
+            #{lnk},
+            #{dscptn},
+            #{pubDt},
+            now(),
+            now(),
+            "1"
+        )
+    </insert>
 
 </mapper>

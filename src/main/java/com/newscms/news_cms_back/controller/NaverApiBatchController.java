@@ -48,10 +48,7 @@ public class NaverApiBatchController {
 //            System.out.println(obj.get("items"));
             Gson gson = new Gson();
             List<NewsDTO> newsDTOList = gson.fromJson(obj.get("items"), new TypeToken<List<NewsDTO>>(){}.getType());
-            for (int i = 0; i < newsDTOList.size(); i++) {
-                System.out.println(newsDTOList.get(i).toEntity());
-            }
-            //newsService.addNews(newsDTOList);
+            newsService.addNews(newsDTOList, category);
 
 
 
