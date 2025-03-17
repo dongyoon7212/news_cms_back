@@ -1,28 +1,28 @@
 package com.newscms.news_cms_back.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.newscms.news_cms_back.dto.NewsDTO;
 import com.newscms.news_cms_back.entity.News;
 import com.newscms.news_cms_back.service.NewsService;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 @RestController
-public class NaverApiBatchController {
+@RequestMapping("/naver")
+public class NaverApiController {
 
     @Value("${naver.api.client-id}")
     private String clientId;
@@ -34,34 +34,34 @@ public class NaverApiBatchController {
     private NewsService newsService;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final List<String> categories = Arrays.asList("속보", "정치", "경제", "IT", "스포츠", "연예");
+    private final List<String> categories = Arrays.asList("주식");
 
+    @GetMapping("/list")
+    public List<News> getNaverNewsList(@RequestParam String display, @RequestParam String start) {
+        List<News> newsList = new ArrayList<>();
 
-    @Scheduled(cron = "0 */12 * * * ?")
-    public void naverNewsApi() {
         for (String category : categories) {
-            String url = buildUrl(category);
+            String url = buildUrl(category, display, start);
             String result = getNewsFromApi(url);
 
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject)parser.parse(result.toString());
-//            System.out.println(obj.get("items"));
             Gson gson = new Gson();
             List<NewsDTO> newsDTOList = gson.fromJson(obj.get("items"), new TypeToken<List<NewsDTO>>(){}.getType());
-            newsService.addNews(newsDTOList, category);
+            for (NewsDTO newsDto : newsDTOList) {
+                newsList.add(newsDto.toEntity(category));
+            }
 
-
-
-            // 카테고리별 뉴스 결과 출력
-//            System.out.println("=== [" + category + " 뉴스] ===");
-//            System.out.println(result);
-//            System.out.println("=============================");
         }
+
+        return newsList;
     }
 
-    private String buildUrl(String query) {
+
+
+    private String buildUrl(String query, String display, String start) {
         // 쿼리 파라미터를 URL에 추가
-        return "https://openapi.naver.com/v1/search/news.json?query=" + query;
+        return "https://openapi.naver.com/v1/search/news.json?sort=date&query=" + query + "&display=" + display + "&start=" + start;
     }
 
     private String getNewsFromApi(String url) {

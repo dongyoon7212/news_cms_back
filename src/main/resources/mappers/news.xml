@@ -45,6 +45,8 @@
             stts_cd
         from
             news_tb
+        order by STR_TO_DATE(pub_dt, '%a, %d %b %Y %H:%i:%s +0900') desc
+        limit 5;
     </select>
 
 </mapper>
