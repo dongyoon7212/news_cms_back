@@ -1,6 +1,7 @@
 package com.newscms.news_cms_back.service;
 
 import com.newscms.news_cms_back.dto.NewsDTO;
+import com.newscms.news_cms_back.entity.News;
 import com.newscms.news_cms_back.repository.NewsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,9 @@ public class NewsService {
         for (int i = 0; i < newsDTOList.size(); i++) {
             newsMapper.addNews(newsDTOList.get(i).toEntity(category));
         }
+    }
+
+    public List<News> getRecentNews() {
+        return newsMapper.getRecentNews();
     }
 }

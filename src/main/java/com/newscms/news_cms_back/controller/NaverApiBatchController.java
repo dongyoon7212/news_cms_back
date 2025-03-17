@@ -37,7 +37,7 @@ public class NaverApiBatchController {
     private final List<String> categories = Arrays.asList("속보", "정치", "경제", "IT", "스포츠", "연예");
 
 
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0 */12 * * * ?")
     public void naverNewsApi() {
         for (String category : categories) {
             String url = buildUrl(category);
